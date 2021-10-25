@@ -21,6 +21,26 @@
 5. 開発ファイル
    とりあえず認証系の一部・PostgreSQLの接続設定はそれぞれ分けてますがそれ以外は`app.py`にいます．
 
+6. PostgreSQL
+   インストール方法はPotgreSQL　インストールって調べたら出てくると思います．
+   とりあえずrole名：`souji`
+   パスワード：`soujipassword`
+   データベース名：`sensor_data`
+   になっています．よくわかんなかったら次の手順でやってください．（.envいじってもらって任意の設定をしてもらってもOKです）
+   ```zsh
+   $ psql
+   postgres=# CREATE ROLE souji SUPERUSER LOGIN PASSWORD 'soujipassword';
+   CREATE ROLE
+   postgres=# CREATE DATABASE sensor_data;
+   CREATE DATABASE
+   ```
+   
+   そしてTable情報を流し込んでください．
+   ```bash
+   $ psql -d sensor_data -f main.sql
+   ```
+
+
 ## メモ
 
 1. Push先
