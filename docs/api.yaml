@@ -58,6 +58,18 @@ paths:
           description: "OK"
         "405":
           description: "Invalid input"
+  /auth:
+    post:
+      tags:
+      - "Account"
+      summary: "JWTログイン"
+      description: "JWTトークンでログイン"
+      operationId: "NewAccount"
+      responses:
+        "200":
+          description: "OK"
+        "405":
+          description: "Invalid input"
 definitions:
   Device:
     type: "object"
@@ -103,3 +115,9 @@ definitions:
       created_at:
         format: "datetime"
         example: "2021-10-25 15:01:01.000000"
+components:
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      description: Credentials or access token for API

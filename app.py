@@ -55,7 +55,7 @@ def post_user():
 def new_user():
     username = request.json['username']
     email = request.json['email']
-    password = request.json['userpw']
+    password = request.json['password']
     display_name = request.json['display_name']
     password_hash = generate_password_hash(password, method='sha256')
     with conn.cursor() as cur:
@@ -63,21 +63,18 @@ def new_user():
     conn.commit()
     return jsonify({"message":"200 OK"}), 200
 
-
-# # ユーザ更新
-@app.route("/alter_user", methods=["put"])
+# # Update Account
+@app.route("/user/update", methods=["put"])
 @jwt_required()
 def alter_user():
     username = request.json['username']
     email = request.json['email']
-    password = request.json['userpw']
+    password = request.json['password']
     display_name = request.json['display_name']
     password_hash = generate_password_hash(password, method='sha256')
-    # 本人情報の取得
     with conn.cursor() as cur:
         cur.execute('SELECT id FROM users WHERE username = %s;', (username,))
         registeredid = cur.fetchall()
-    # 本人情報の確認
     if str(current_identity[0]) == str(re.sub("\(|\,|\)", "", str(registeredid[0]))):
         with conn.cursor() as cur:
             cur.execute('UPDATE users SET username=%s, email=%s, password_digest=%s, display_name=%s WHERE username = %s', (username, email, password_hash, display_name, username))
