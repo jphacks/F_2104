@@ -78,7 +78,7 @@ definitions:
         example: 0.1
       sent_at:
         format: "datetime"
-        example: 2021-10-25 15:01:01.000000
+        example: "2021-10-25 15:01:01.000000"
   Account:
     type: "object"
     required:
@@ -102,4 +102,4 @@ definitions:
         example: "山田太郎"
       created_at:
         format: "datetime"
-        example: 2021-10-25 15:01:01.000000
+        example: "2021-10-25 15:01:01.000000"

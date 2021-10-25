@@ -9,6 +9,7 @@ from flask import Flask, abort, jsonify, request, render_template
 from flask_jwt import JWT, current_identity, jwt_required
 from werkzeug.security import generate_password_hash
 import datetime
+import re
 
 # Modules
 from connection import *
@@ -21,14 +22,14 @@ dotenv_path = join(dirname(__file__), ".env")
 load_dotenv(dotenv_path)
 
 class User(object):
-    def __init__(self, id, username, password, namae):
+    def __init__(self, id, username, password, display_name):
         self.id = id
         self.username = username
         self.password = password
-        self.namae = namae
+        self.display_name = display_name
 
     def __str__(self):
-        return ["%s","%s","%s"] % (self.id, self.username, self.namae)
+        return ["%s","%s","%s"] % (self.id, self.username, self.display_name)
 jwt = JWT(app, authenticate, identity)
 
 @app.route("/")
@@ -53,16 +54,40 @@ def post_user():
 @app.route("/user/new", methods=["post"])
 def new_user():
     username = request.json['username']
-    useremail = request.json['useremail']
+    email = request.json['email']
     password = request.json['userpw']
-    namae = request.json['namae']
+    display_name = request.json['display_name']
     password_hash = generate_password_hash(password, method='sha256')
     with conn.cursor() as cur:
-        cur.execute("CREATE TABLE IF NOT EXISTS users (id serial PRIMARY KEY, username varchar UNIQUE, useremail varchar UNIQUE, password_digest varchar, namae varchar);")
-        cur.execute("CREATE TABLE IF NOT EXISTS questions (id serial PRIMARY KEY, subject varchar, description varchar, heading varchar, quiz text, answershet text, created_by integer, renew_rules integer, created_at timestamp, changed_at timestamp);")
-        cur.execute('INSERT INTO users (username, useremail, password_digest, namae) VALUES (%s, %s, %s, %s)', (username, useremail, password_hash, namae))
+        cur.execute('INSERT INTO users (username, email, password_digest, display_name) VALUES (%s, %s, %s, %s)', (username, email, password_hash, display_name))
     conn.commit()
     return jsonify({"message":"200 OK"}), 200
+
+
+# # ユーザ更新
+@app.route("/alter_user", methods=["put"])
+@jwt_required()
+def alter_user():
+    username = request.json['username']
+    email = request.json['email']
+    password = request.json['userpw']
+    display_name = request.json['display_name']
+    password_hash = generate_password_hash(password, method='sha256')
+    # 本人情報の取得
+    with conn.cursor() as cur:
+        cur.execute('SELECT id FROM users WHERE username = %s;', (username,))
+        registeredid = cur.fetchall()
+    # 本人情報の確認
+    if str(current_identity[0]) == str(re.sub("\(|\,|\)", "", str(registeredid[0]))):
+        with conn.cursor() as cur:
+            cur.execute('UPDATE users SET username=%s, email=%s, password_digest=%s, display_name=%s WHERE username = %s', (username, email, password_hash, display_name, username))
+        conn.commit()
+        return jsonify({"message":"200 OK"}), 200
+    else:
+        return jsonify(
+            {
+                "message": "Forbidden"
+            }), 403
 
 if __name__ == "__main__":
   if os.environ.get("IS_DEBUG") == "True":
