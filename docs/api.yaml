@@ -5,12 +5,14 @@ info:
   title: "掃除しなくちゃ"
 tags:
 - name: "Device"
-  description: "デバイスからアクセスする用のAPI"
+  description: "デバイスからアクセスする用"
+- name: "Account"
+  description: "アカウント管理用"
 schemes:
 - "https"
 - "http"
 paths:
-  /device:
+  /device/new:
     post:
       tags:
       - "Device"
@@ -28,6 +30,29 @@ paths:
         required: true
         schema:
           $ref: "#/definitions/Device"
+      responses:
+        "200":
+          description: "OK"
+        "405":
+          description: "Invalid input"
+  /account/new:
+    post:
+      tags:
+      - "Account"
+      summary: "デバイスで取得された値を取得"
+      description: "デバイスで取得された値を送信する先です．"
+      operationId: "NewAccount"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "デバイスで取得された値をストアしてください"
+        required: true
+        schema:
+          $ref: "#/definitions/Account"
       responses:
         "200":
           description: "OK"
@@ -52,5 +77,29 @@ definitions:
         format: "integer"
         example: 0.1
       sent_at:
+        format: "datetime"
+        example: 2021-10-25 15:01:01.000000
+  Account:
+    type: "object"
+    required:
+    - "username"
+    - "password"
+    - "email"
+    - "display_name"
+    - "created_at"
+    properties:
+      username:
+        type: "string"
+        example: "tyamada"
+      password:
+        type: "string"
+        example: "B2HjsU!fwdalk"
+      email:
+        format: "string"
+        example: "tyamada@example.com"
+      display_name:
+        format: "string"
+        example: "山田太郎"
+      created_at:
         format: "datetime"
         example: 2021-10-25 15:01:01.000000
