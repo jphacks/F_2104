@@ -45,7 +45,7 @@ def post_user():
   type = request.json["type"]
   value = request.json["value"]
   with conn.cursor() as cur:
-    cur.execute("INSERT INTO users (module_id, type, value) VALUES (%s, %s, %s)", (module_id, type, int(value)))
+    cur.execute("INSERT INTO resource (module_id, type, value) VALUES (%s, %s, %s)", (module_id, type, int(value)))
   conn.commit()
   return jsonify({"message":"200 OK"}), 200
 
