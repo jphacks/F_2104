@@ -12,6 +12,7 @@ import datetime
 import re
 
 # Modules
+from auth import *
 from connection import *
 
 app = Flask(__name__)
