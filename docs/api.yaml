@@ -1,0 +1,56 @@
+swagger: "2.0"
+info:
+  description: "JPHacks2021「掃除しなくちゃ」のAPIドキュメントです．"
+  version: "0.1"
+  title: "掃除しなくちゃ"
+tags:
+- name: "Device"
+  description: "デバイスからアクセスする用のAPI"
+schemes:
+- "https"
+- "http"
+paths:
+  /device:
+    post:
+      tags:
+      - "Device"
+      summary: "デバイスで取得された値を取得"
+      description: "デバイスで取得された値を送信する先です．"
+      operationId: "AddRecordOfDevice"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "デバイスで取得された値をストアしてください"
+        required: true
+        schema:
+          $ref: "#/definitions/Device"
+      responses:
+        "200":
+          description: "OK"
+        "405":
+          description: "Invalid input"
+definitions:
+  Device:
+    type: "object"
+    required:
+    - "module_id"
+    - "type"
+    - "value"
+    - "sent_at"
+    properties:
+      module_id:
+        type: "string"
+        example: "00:00:5e:00:53:00"
+      type:
+        format: "string"
+        example: "dust"
+      value:
+        format: "integer"
+        example: 0.1
+      sent_at:
+        format: "datetime"
+        example: 2021-10-25 15:01:01.000000
