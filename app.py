@@ -52,17 +52,17 @@ def post_user():
 @app.route("/devices/new", methods=["post"])
 def new_device():
   module_id = request.json["module_id"]
-  allow_users = request.json["allow_users"]
+  allowed_users = request.json["allowed_users"]
   with conn.cursor() as cur:
-    cur.execute("INSERT INTO devices (module_id, allow_users) VALUES (%s, %s)", (module_id, allow_users))
+    cur.execute("INSERT INTO devices (module_id, allowed_users) VALUES (%s, %s)", (module_id, allowed_users))
   conn.commit()
   return jsonify({"message":"200 OK"}), 200
 @app.route("/devices/renew", methods=["put"])
 def renew_device():
   module_id = request.json["module_id"]
-  allow_users = request.json["allow_users"]
+  allowed_users = request.json["allowed_users"]
   with conn.cursor() as cur:
-    cur.execute('UPDATE devices SET allow_users=%s WHERE module_id = %s', (allow_users, module_id))
+    cur.execute('UPDATE devices SET allowed_users=%s WHERE module_id = %s', (allowed_users, module_id))
   conn.commit()
   return jsonify({"message":"200 OK"}), 200
 @app.route("/devices/delete", methods=["delete"])
