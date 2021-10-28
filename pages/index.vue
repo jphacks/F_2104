@@ -3,9 +3,9 @@
     <table class="table is-fullwidth is-hoverable">
       <thead>
         <tr>
-          <th>0</th>
-          <th>1</th>
-          <th>2</th>
+          <th>detect_times</th>
+          <th>detect_ratio</th>
+          <th>value</th>
         </tr>
       </thead>
       <tbody>
