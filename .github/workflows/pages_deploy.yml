@@ -13,25 +13,36 @@ jobs:
     runs-on: ubuntu-20.04
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
+
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout 🛎
+        uses: actions/checkout@master
 
-      - name: Setup Node
-        uses: actions/setup-node@v2
+      - name: Setup node env 🏗
+        uses: actions/setup-node@v2.1.5
         with:
-          node-version: '14'
+          node-version: ${{ matrix.node }}
+          check-latest: true
 
-      - name: Cache dependencies
-        uses: actions/cache@v2
+      - name: Get yarn cache directory path 🛠
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: Cache node_modules 📦
+        uses: actions/cache@v2.1.4
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-node-
+            ${{ runner.os }}-yarn-
 
-      - run: npm ci
-      - run: npm test
-      - run: npm run generate
+      - name: Install dependencies 👨🏻‍💻
+        run: yarn
+
+      - name: Run linter 👀
+        run: yarn lint
+      - run: yarn generate
 
       - name: deploy
         uses: peaceiris/actions-gh-pages@v3
