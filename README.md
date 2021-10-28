@@ -48,7 +48,8 @@
 
 #### フレームワーク・ライブラリ・モジュール
 * Flask
-* 
+* NuxtJS
+ * Chart.js
 
 #### デバイス
 * ESP32
@@ -62,3 +63,9 @@
 #### 製品に取り入れた研究内容（データ・ソフトウェアなど）（※アカデミック部門の場合のみ提出必須）
 * 
 * 
+
+
+### Branch
+* `frontend`, `gh-pages`: Frontend([GH Pages](https://jphacks.githubl.io/F_2104) にて公開中)
+* `dev-es@32`: Hardware
+* `dev-backend`: Backend
