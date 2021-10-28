@@ -1,4 +1,4 @@
-name: GitHub Pages
+name: ci
 
 on:
   push:
@@ -9,10 +9,13 @@ on:
       - frontend
 
 jobs:
-  deploy:
-    runs-on: ubuntu-20.04
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
+  ci:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [14]
 
     steps:
       - name: Checkout 🛎
@@ -42,11 +45,11 @@ jobs:
 
       - name: Run linter 👀
         run: yarn lint
-      - run: yarn generate
+      - name: Generate 🖨
+        run: yarn run generate
 
-      - name: deploy
+      - name: Deploy 🖥
         uses: peaceiris/actions-gh-pages@v3
-        if: ${{ github.ref == 'refs/heads/main' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
