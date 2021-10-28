@@ -1,6 +1,6 @@
 export default {
   router: {
-    base: '/f_2104/'
+    base: '/F_2104/'
   },
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
@@ -21,7 +21,7 @@ export default {
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/f_2104/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/F_2104/favicon.ico' }
     ]
   },
 
