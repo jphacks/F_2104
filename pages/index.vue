@@ -1,53 +1,41 @@
 <template>
-  <section class="section">
-    <div class="columns is-mobile">
-      <card
-        title="Free"
-        icon="github"
-      >
-        Open source on <a href="https://github.com/buefy/buefy">
-          GitHub
-        </a>
-      </card>
-
-      <card
-        title="Responsive"
-        icon="cellphone-link"
-      >
-        <b class="has-text-grey">
-          Every
-        </b> component is responsive
-      </card>
-
-      <card
-        title="Modern"
-        icon="alert-decagram"
-      >
-        Built with <a href="https://vuejs.org/">
-          Vue.js
-        </a> and <a href="http://bulma.io/">
-          Bulma
-        </a>
-      </card>
-
-      <card
-        title="Lightweight"
-        icon="arrange-bring-to-front"
-      >
-        No other internal dependency
-      </card>
-    </div>
-  </section>
+  <div>
+    <table class="table is-fullwidth is-hoverable">
+      <thead>
+        <tr>
+          <th>0</th>
+          <th>1</th>
+          <th>2</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="item in items" :key="item.id" >
+          <td>{{item.detect_times}}</td>
+          <td>{{item.detect_ratio}}</td>
+          <td>{{item.value}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
-
 <script>
-import Card from '~/components/Card'
+const csvParse = require('csv-parse/lib/sync')
 
 export default {
-  name: 'HomePage',
-
-  components: {
-    Card
+  data() {
+    return {
+      items: []
+    }
+  },
+  async mounted() {
+    try {
+      const csv = await this.$axios.$get(
+        'https://raw.githubusercontent.com/jphacks/F_2104/dev_esp32/output/dustsensor_data/test.csv'
+      )
+      this.items = csvParse(csv, { columns: true })
+    } catch (error) {
+      // とりあえず放置
+    }
   }
 }
 </script>
