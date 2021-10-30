@@ -76,4 +76,4 @@
 
 ## 製品イメージ
 <img width="359" alt="スクリーンショット 2021-10-30 13 58 34" src="https://user-images.githubusercontent.com/49401718/139520801-cd8f224a-2dd1-4780-9ba6-eb8f08d4da01.png">
-<img width="359" src="https://imgur.com/a/Kpvx9N3.png">
+<img width="359" src="https://imgur.com/a/Kpvx9N3.jpg">
