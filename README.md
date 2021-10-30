@@ -48,10 +48,10 @@
 
 #### フレームワーク・ライブラリ・モジュール
 * Flask
- * 各ライブラリについてはdev_backendレポジトリのrequirements.txtを参照
+  * 各ライブラリについてはdev_backendレポジトリのrequirements.txtを参照
 * PostgreSQL
 * NuxtJS
- * 各ライブラリについてはfrontendレポジトリのpackages.jsonを参照
+  * 各ライブラリについてはfrontendレポジトリのpackages.jsonを参照
 * Heroku（デプロイ先として）
 
 #### デバイス
