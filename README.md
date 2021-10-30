@@ -75,5 +75,9 @@
 * `dev-backend`: Backend
 
 ## 製品イメージ
-<img width="359" alt="スクリーンショット 2021-10-30 13 58 34" src="https://user-images.githubusercontent.com/49401718/139520801-cd8f224a-2dd1-4780-9ba6-eb8f08d4da01.png">
 <img width="359" src="https://i.imgur.com/cgBt0gQ.jpeg">
+* 綺麗な場合
+　　* <img width="359" alt="スクリーンショット 2021-10-30 13 58 34" src="https://user-images.githubusercontent.com/49401718/139520801-cd8f224a-2dd1-4780-9ba6-eb8f08d4da01.png">
+* 綺麗ではない場合
+　　* <img width="1792" alt="スクリーンショット 2021-10-30 14 22 08" src="https://user-images.githubusercontent.com/49401718/139521349-eb80d884-fe05-440b-b466-7b87531ae427.png">
+
