@@ -44,8 +44,9 @@ def post_user():
   module_id = request.json["module_id"]
   type = request.json["type"]
   value = request.json["value"]
+  sent_at = request.json["sent_at"]
   with conn.cursor() as cur:
-    cur.execute("INSERT INTO resource (module_id, type, value) VALUES (%s, %s, %s)", (module_id, type, int(value)))
+    cur.execute("INSERT INTO resource (module_id, type, value, sent_at) VALUES (%s, %s, %s, %s)", (module_id, type, str(value), sent_at))
   conn.commit()
   return jsonify({"message":"200 OK"}), 200
 
@@ -80,18 +81,18 @@ class SentData(object):
     self.value = value
     self.sent_at = sent_at
   def __str__(self):
-    return ["%s","%s","%s"] % (self.module_id, self.sent_at, self.value)
+    return ["%s","%s","%s","%s"] % (self.module_id, self.sent_at, self.value, self.sent_at)
 ## Return atai
-@app.route("/data/datas", methods=["post"])
+@app.route("/data/datas")
 def dates():
-  data_from = datetime.datetime.strptime(request.json["from"], '%Y-%m-%d %H:%M:%S')
-  data_to = datetime.datetime.strptime(request.json["to"], '%Y-%m-%d %H:%M:%S')
+  # data_from = datetime.datetime.strptime(request.json["from"], '%Y-%m-%d %H:%M:%S')
+  # data_to = datetime.datetime.strptime(request.json["to"], '%Y-%m-%d %H:%M:%S')
   with conn.cursor() as cur:
-    cur.execute('SELECT (module_id, type, value, sent_at) from resource WHERE BETWEEN %s AND %s)', (
-    data_from, data_to))
-  results = cur.fetchall()
-  result = [SentData(u[0], u[1], u[2], u[3]) for u in results]
-  return jsonify({"message":"200 OK", "data": result})
+    # cur.execute('SELECT (module_id, type, value, sent_at) from resource WHERE BETWEEN %s AND %s)', (data_from, data_to))
+    cur.execute('SELECT (module_id, type, value, sent_at) FROM resource')
+    results = cur.fetchall()
+  # results = [SentData(r[0], r[1], r[2]) for r in results]
+  return jsonify({"data": results}), 200
 
 # Account
 # # New Account
