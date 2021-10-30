@@ -44,7 +44,7 @@ def post_user():
   module_id = request.json["module_id"]
   type = request.json["type"]
   value = request.json["value"]
-  sent_at = request.json["sent_at"]
+  sent_at = datetime.datetime.now()
   with conn.cursor() as cur:
     cur.execute("INSERT INTO resource (module_id, type, value, sent_at) VALUES (%s, %s, %s, %s)", (module_id, type, str(value), sent_at))
   conn.commit()
