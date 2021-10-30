@@ -48,8 +48,11 @@
 
 #### フレームワーク・ライブラリ・モジュール
 * Flask
+ * 各ライブラリについてはdev_backendレポジトリのrequirements.txtを参照
+* PostgreSQL
 * NuxtJS
- * Chart.js
+ * 各ライブラリについてはfrontendレポジトリのpackages.jsonを参照
+* Heroku（デプロイ先として）
 
 #### デバイス
 * ESP32
