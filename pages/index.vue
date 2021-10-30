@@ -6,25 +6,35 @@
     <table class="table is-fullwidth is-hoverable scrollable">
       <thead>
         <tr>
-          <th>detect_times</th>
-          <th>detect_ratio</th>
-          <th>value</th>
+          <th>実測値</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in items" :key="item.datetime" >
-          <td>{{item.detect_times}}</td>
-          <td>{{item.value/item.detect_ratio}}</td>
-          <td>{{item.value}}</td>
+        <tr v-for="item in items.data" :key="item.datetime" >
+          <td>{{JSON.parse(JSON.stringify(item.value.replace(/\"/g, '\"\"')))}}</td>
         </tr>
       </tbody>
     </table>
   </div>
 </template>
 <script>
-const csvParse = require('csv-parse/lib/sync')
+// const csvParse = require('csv-parse/lib/sync')
 
 export default {
+  // async mounted() {
+  //   try {
+  //     const csv = await this.$axios.$get(
+  //       'https://raw.githubusercontent.com/jphacks/F_2104/dev_esp32/output/dustsensor_data/dustsensor_data.csv'
+  //     )
+  //     this.items = csvParse(csv, { columns: true })
+  //   } catch (error) {
+  //     // とりあえず放置
+  //   }
+  // }
+  async asyncData({ $axios }) {
+    const items = await $axios.$get('https://sv-souji-f2104.herokuapp.com/data/datas')
+    return { items }
+  },
   data() {
     return {
       items: [],
@@ -33,15 +43,19 @@ export default {
       icon_status: 'check-circle',
     }
   },
-  async mounted() {
-    try {
-      const csv = await this.$axios.$get(
-        'https://raw.githubusercontent.com/jphacks/F_2104/dev_esp32/output/dustsensor_data/dustsensor_data.csv'
-      )
-      this.items = csvParse(csv, { columns: true })
-    } catch (error) {
-      // とりあえず放置
-    }
-  }
+  // methods: {
+  //   evaluation(){
+  //     if (this.items.data[array.length -1].value === "{'detect_times': 0, 'detect_ratio': 0, 'value': 0.6200000047683716}") {
+  //       alert(this.items.data[array.length -1])
+  //       this.color = "success"
+  //       this.status = '問題ありません'
+  //       this.icon_status = 'check-circle'
+  //     } else {
+  //       this.color = "danger"
+  //       this.status = '問題あります'
+  //       this.icon_status = 'exclamation-circle'
+  //     }
+  //   }
+  // }
 }
 </script>
