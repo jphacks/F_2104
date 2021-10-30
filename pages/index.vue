@@ -1,7 +1,7 @@
 <template>
   <div>
     <Card :status="status" :icon="icon_status" :color="color" />
-    <button v-if="icon_status==`check-circle`" class="button is-fullwidth" @click="icon_status=`close-circle`,color=`danger`,status='汚い状況です'">UIサンプル用機能：O⇄X表示切り替え</button>
+    <button v-if="icon_status==`check-circle`" class="button is-fullwidth" @click="icon_status=`close-circle`,color=`danger`,status='あまり綺麗ではないです...'">UIサンプル用機能：O⇄X表示切り替え</button>
     <button v-if="icon_status==`close-circle`" class="button is-fullwidth" @click="icon_status=`check-circle`,color=`success`,status='比較的綺麗です'">UIサンプル用機能：O⇄X表示切り替え</button>
     <table class="table is-fullwidth is-hoverable scrollable">
       <thead>
