@@ -38,7 +38,7 @@
 ### 今後の展望
 ### 注力したこと（こだわり等）
 * センサを用いて周りの環境を測定した
-* 
+* 好きな場所にセンサを設置する事が可能にするためにWiFiが搭載されているマイコン(esp32)を利用してサーバとの通信を確立しPCやラズパイなどが不要なマイコンとセンサのみの安価なシステム構成にした
 
 ## 開発技術
 ### 活用した技術
@@ -48,15 +48,16 @@
 
 #### フレームワーク・ライブラリ・モジュール
 * Flask
-  * 依存しているライブラリについてはdev_backendレポジトリのrequirements.txtを参照
+ * 各ライブラリについてはdev_backendレポジトリのrequirements.txtを参照
 * PostgreSQL
 * NuxtJS
-  * 依存しているライブラリについてはfrontendレポジトリのpackages.jsonを参照
+ * 各ライブラリについてはfrontendレポジトリのpackages.jsonを参照
 * Heroku（デプロイ先として）
 
 #### デバイス
 * ESP32
-* 
+* CCS811(空気品質センサ)
+* GROVE-ダストセンサ
 
 ### 独自技術
 #### ハッカソンで開発した独自機能・技術
@@ -70,5 +71,5 @@
 
 ### Branch
 * `frontend`, `gh-pages`: Frontend([GH Pages](https://jphacks.github.io/F_2104) にて公開中)
-* `dev-esp32`: Hardware
+* `dev-es@32`: Hardware
 * `dev-backend`: Backend
