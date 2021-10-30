@@ -3,7 +3,7 @@ import os
 from os.path import dirname, join
 
 # from pyotp import TOTP
-from datetime import datetime, timedelta
+import datetime
 from dotenv import load_dotenv
 from flask import Flask, abort, jsonify, request, render_template
 from flask_jwt import JWT, current_identity, jwt_required
@@ -62,7 +62,7 @@ def renew_device():
   module_id = request.json["module_id"]
   allowed_users = request.json["allowed_users"]
   with conn.cursor() as cur:
-    cur.execute('UPDATE devices SET allowed_users=%s WHERE module_id = %s', (allowed_users, module_id))
+    cur.execute('UPDATE devices SET allowed_users=%s WHERE module_id =%s', (allowed_users, module_id))
   conn.commit()
   return jsonify({"message":"200 OK"}), 200
 @app.route("/devices/delete", methods=["delete"])
@@ -72,6 +72,26 @@ def delete_device():
     cur.execute('DELETE FROM devices where=%s', (module_id))
   conn.commit()
   return jsonify({"message":"200 OK"}), 200
+
+class SentData(object):
+  def __init__(self, module_id, type, value, sent_at):
+    self.module_id = module_id
+    self.type = type
+    self.value = value
+    self.sent_at = sent_at
+  def __str__(self):
+    return ["%s","%s","%s"] % (self.module_id, self.sent_at, self.value)
+## Return atai
+@app.route("/data/datas", methods=["post"])
+def dates():
+  data_from = datetime.datetime.strptime(request.json["from"], '%Y-%m-%d %H:%M:%S')
+  data_to = datetime.datetime.strptime(request.json["to"], '%Y-%m-%d %H:%M:%S')
+  with conn.cursor() as cur:
+    cur.execute('SELECT (module_id, type, value, sent_at) from resource WHERE BETWEEN %s AND %s)', (
+    data_from, data_to))
+  results = cur.fetchall()
+  result = [SentData(u[0], u[1], u[2], u[3]) for u in results]
+  return jsonify({"message":"200 OK", "data": result})
 
 # Account
 # # New Account
