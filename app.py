@@ -95,7 +95,7 @@ def dates():
     # cur.execute('SELECT (module_id, type, value, sent_at) from resource WHERE BETWEEN %s AND %s)', (data_from, data_to))
     cur.execute('SELECT module_id, type, value, sent_at FROM resource')
     results = cur.fetchall()
-  results = {"data": [{"module_id": r[0], "type": r[1], "value": re.sub('\'','"',r[2]), "sent_at": r[3]} for r in results]}
+  results = {"data": [{"module_id": r[0], "type": r[1], "value": r[2], "sent_at": r[3]} for r in results]}
   return jsonify(results), 200
 
 
