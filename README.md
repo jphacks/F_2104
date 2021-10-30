@@ -70,5 +70,5 @@
 
 ### Branch
 * `frontend`, `gh-pages`: Frontend([GH Pages](https://jphacks.github.io/F_2104) にて公開中)
-* `dev-es@32`: Hardware
+* `dev-esp32`: Hardware
 * `dev-backend`: Backend
