@@ -5,7 +5,7 @@ from os.path import dirname, join
 # from pyotp import TOTP
 import datetime
 from dotenv import load_dotenv
-from flask import Flask, abort, jsonify, request, render_template
+from flask import Flask, abort, jsonify, request, render_template, make_response
 from flask_jwt import JWT, current_identity, jwt_required
 from werkzeug.security import generate_password_hash
 import datetime
@@ -47,6 +47,7 @@ def post_user():
   type = request.json["type"]
   value = request.json["value"]
   sent_at = datetime.datetime.now()
+  print(module_id)
   with conn.cursor() as cur:
     cur.execute("INSERT INTO resource (module_id, type, value, sent_at) VALUES (%s, %s, %s, %s)", (module_id, type, str(value), sent_at))
   conn.commit()
@@ -82,19 +83,21 @@ class SentData(object):
     self.type = type
     self.value = value
     self.sent_at = sent_at
-  def __str__(self):
-    return ["%s","%s","%s","%s"] % (self.module_id, self.sent_at, self.value, self.sent_at)
-## Return atai
+  def __dict__(self):
+    return {"module_id": self.module_id, "type": self.sent_at, "value": self.value, "sent_at": self.sent_at}
+  def serialize(self):
+    return {"module_id": self.module_id, "type": self.sent_at, "value": self.value, "sent_at": self.sent_at}
 @app.route("/data/datas")
 def dates():
   # data_from = datetime.datetime.strptime(request.json["from"], '%Y-%m-%d %H:%M:%S')
   # data_to = datetime.datetime.strptime(request.json["to"], '%Y-%m-%d %H:%M:%S')
   with conn.cursor() as cur:
     # cur.execute('SELECT (module_id, type, value, sent_at) from resource WHERE BETWEEN %s AND %s)', (data_from, data_to))
-    cur.execute('SELECT (module_id, type, value, sent_at) FROM resource')
+    cur.execute('SELECT module_id, type, value, sent_at FROM resource')
     results = cur.fetchall()
-  # results = [SentData(r[0], r[1], r[2]) for r in results]
-  return jsonify({"data": results}), 200
+  results = {"data": [{"module_id": r[0], "type": r[1], "value": r[2], "sent_at": r[3]} for r in results]}
+  return jsonify(results), 200
+
 
 # Account
 # # New Account
@@ -129,10 +132,10 @@ def alter_user():
         conn.commit()
         return jsonify({"message":"200 OK"}), 200
     else:
-        return jsonify(
-            {
-                "message": "Forbidden"
-            }), 403
+      return jsonify(
+        {
+            "message": "Forbidden"
+        }), 403
 
 if __name__ == "__main__":
   if os.environ.get("IS_DEBUG") == "True":
