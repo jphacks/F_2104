@@ -10,12 +10,14 @@ from flask_jwt import JWT, current_identity, jwt_required
 from werkzeug.security import generate_password_hash
 import datetime
 import re
+from flask_cors import CORS
 
 # Modules
 from auth import *
 from connection import *
 
 app = Flask(__name__)
+CORS(app)
 app.config["JSON_AS_ASCII"] = False
 load_dotenv(verbose=True)
 app.config["JWT_SECRET_KEY"] = os.environ.get('JWT_SECRET')
@@ -39,7 +41,7 @@ def root():
 
 # デバイス関連
 # # データの登録
-@app.route("/device/new", methods=["post"])
+@app.route("/devices/new", methods=["post"])
 def post_user():
   module_id = request.json["module_id"]
   type = request.json["type"]
@@ -50,7 +52,7 @@ def post_user():
   conn.commit()
   return jsonify({"message":"200 OK"}), 200
 
-@app.route("/devices/new", methods=["post"])
+@app.route("/account_auth/new", methods=["post"])
 def new_device():
   module_id = request.json["module_id"]
   allowed_users = request.json["allowed_users"]
@@ -58,7 +60,7 @@ def new_device():
     cur.execute("INSERT INTO devices (module_id, allowed_users) VALUES (%s, %s)", (module_id, allowed_users))
   conn.commit()
   return jsonify({"message":"200 OK"}), 200
-@app.route("/devices/renew", methods=["put"])
+@app.route("/account_auth/renew", methods=["put"])
 def renew_device():
   module_id = request.json["module_id"]
   allowed_users = request.json["allowed_users"]
@@ -66,7 +68,7 @@ def renew_device():
     cur.execute('UPDATE devices SET allowed_users=%s WHERE module_id =%s', (allowed_users, module_id))
   conn.commit()
   return jsonify({"message":"200 OK"}), 200
-@app.route("/devices/delete", methods=["delete"])
+@app.route("/account_auth/delete", methods=["delete"])
 def delete_device():
   module_id = request.json["module_id"]
   with conn.cursor() as cur:
